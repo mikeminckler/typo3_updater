@@ -19,6 +19,12 @@ class User extends Authenticatable
         'name', 'email', 'password',
     ];
 
+    protected $publish_users = [
+        'mike.minckler@brentwood.ca',
+        'ian.mcpherson@brentwood.ca',
+        'cheryl.murtland@brentwood.bc.ca',
+    ];
+
     /**
      * The attributes that should be hidden for arrays.
      *
@@ -27,4 +33,19 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    public function groups()
+    {
+        return session()->get('groups');
+    }
+
+    public function hasGroup($group)
+    {
+        return session()->get('user_groups')->contains($group);
+    }
+
+    public function canPublish()
+    {
+        return collect($this->publish_users)->contains(auth()->user()->email);
+    }
 }

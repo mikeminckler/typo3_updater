@@ -1,14 +1,184 @@
-
+:root {
+    --font-size: 17px;
+    --font-color: rgb(50, 50, 50);
+    --button-bg: rgb(208, 52, 58);
+    --button-text: rgb(255, 255, 255);
+}
 // Fonts
 @import url('https://fonts.googleapis.com/css?family=Nunito');
 
-// Variables
-@import 'variables';
+body {
+    font-family: 'Nunito', sans-serif;
+    font-size: var(--font-size);
+    color: var(--font-color);
+}
 
-// Bootstrap
-@import '~bootstrap/scss/bootstrap';
+div#app {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
 
-.navbar-laravel {
-  background-color: #fff;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+div.header {
+    display: flex;
+    justify-content: flex-end;
+    min-height: 25px;
+    font-size: calc( var(--font-size) - 2px );
+    align-items: center;
+
+    & div.user-info {
+        display: flex;
+
+        & div {
+            padding: 0px 5px;
+        }
+    }
+}
+
+div.content, div.header {
+    width: 100vw;
+    max-width: 1000px;
+}
+
+.button {
+    background-color: var(--button-bg);
+    color: var(--button-text);
+    text-decoration: none;
+    padding: 2px 8px;
+    cursor: pointer;
+}
+
+div.button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+h1 {
+    margin: 0 0 15px 0;
+    padding-left: 10px;
+}
+
+div.section {
+    padding: 10px;
+}
+
+div.input-block {
+    display: flex;
+    align-items: center;
+}
+
+div.input-label {
+    padding-right: 5px;
+}
+
+input {
+    font-size: var(--font-size);
+    width: 100%;
+    margin: 2px;
+    padding: 2px;
+}
+
+div.content-items {
+    max-width: 800px;
+}
+
+div.content-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px 0;
+    margin-bottom: 5px;
+    cursor: pointer;
+    border-bottom: 1px solid #ccc;
+
+    & .content-title {
+        color: var(--font-color);
+        font-size: 20px;
+        display: flex;
+
+        & .expander-icon {
+            padding: 0px 5px;
+            font-size: 20px;
+        }
+    }
+}
+
+div.content-status {
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+
+    & svg {
+        font-size: 20px;
+        padding: 0px 5px;
+    }
+}
+
+div.content-status-icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+div.content-bodytext {
+    overflow: hidden;
+    padding: 5px;
+}
+
+div.content-header.changed {
+    background-color: rgba(255, 255, 155, 0.5);
+}
+
+.content-status-icon.changed {
+    padding: 0px 5px;
+    cursor: pointer;
+}
+
+.content-status-icon.published {
+}
+
+@keyframes saving {
+    0% {
+        top: 20px;
+        position: relative;
+    }
+    100%   {
+        top: 0px;
+        position: relative;
+    }
+}
+
+.saving-enter-active {
+    animation: saving .5s;
+}
+
+.saving-leave-active {
+    animation: saving .25s reverse;
+}
+
+@keyframes expander {
+    0% {
+        max-height: 0px;
+    }
+    100%   {
+        max-height: 375px;
+    }
+}
+
+.expander-enter-active {
+    animation: expander .25s;
+}
+
+.expander-leave-active {
+    animation: expander .25s reverse;
+}
+
+.expander-icon {
+    transition: transform .5s ease;
+}
+
+.expander-icon.expanded {
+    transform: rotateX(180deg);
 }

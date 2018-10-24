@@ -11,13 +11,19 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/', 'HomeController@index')->name('home');
 
-Route::get('login/{provider}', 'Auth\LoginController@redirectToProvider');
-Route::get('login/{provider}/callback', 'Auth\LoginController@handleProviderCallback');
+Route::get('login', 'Auth\LoginController@redirectToProvider')->name('login');
+Route::get('login/callback', 'Auth\LoginController@handleProviderCallback')->name('login.callback');
+
+Route::group(['middleware' => ['auth', 'staff']], function () {
+
+    Route::get('content', 'ContentController@index')->name('content');
+    Route::post('content/load', 'ContentController@load')->name('content.load');
+    Route::post('content/create', 'ContentController@create')->name('content.create');
+    Route::post('content/update', 'ContentController@update')->name('content.update');
+    Route::post('content/publish', 'ContentController@publish')->name('content.publish');
+
+});

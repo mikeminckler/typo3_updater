@@ -5,6 +5,11 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 
+use Socialite;
+use App\User;
+use Carbon\Carbon;
+use App\GoogleAPI;
+
 class LoginController extends Controller
 {
     /*
@@ -25,7 +30,8 @@ class LoginController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    protected $redirectTo = '/';
+    protected $provider;
 
     /**
      * Create a new controller instance.
@@ -34,7 +40,8 @@ class LoginController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('guest')->except('logout');
+        //$this->middleware('guest')->except('logout');
+        $this->provider = env('OAUTH_PROVIDER');
     }
 
 	/** 
@@ -42,9 +49,9 @@ class LoginController extends Controller
      *
      * @return Response
      */
-	public function redirectToProvider($provider)
+	public function redirectToProvider()
     {
-        return Socialite::driver($provider)->with(['hd' => 'brentwood.ca'])->redirect();
+        return Socialite::driver($this->provider)->with(['hd' => 'brentwood.ca'])->redirect();
     }
 
     /**
@@ -55,50 +62,48 @@ class LoginController extends Controller
      *
      * @return Response
      */
-    public function handleProviderCallback($provider)
+    public function handleProviderCallback()
     {
 
-        $user = Socialite::driver($provider)->user();
-        $authUser = $this->findOrCreateUser($user, $provider);
+        // https://developers.google.com/admin-sdk/directory/v1/quickstart/php
 
-        if (!$authUser){
-            return '<p>Error, you are not a member of Brentwood College School!!</p>';
+		try {
+			$user = Socialite::driver($this->provider)->user();
+        } catch (\Exception $e) {
+            return redirect()->route('login');
         }
 
-        Auth::login($authUser, true);
-        return redirect('/');
-
-    }
-
-    /**
-     * If a user has registered before using social auth, return the user
-     * else, create a new user object.
-     * @param  $user Socialite user object
-     * @param $provider Social auth provider
-     * @return  User
-     */
-    public function findOrCreateUser($user, $provider)
-    {
-
-        $authUser = User::where('provider_id', $user->id)->first();
-
-        if ($authUser) {
-            return $authUser;
+        // only allow people with @company.com to login
+        if(explode("@", $user->email)[1] !== 'brentwood.ca'){
+            return redirect()->route('home')->with(['error' => 'You must login with your brentwood.ca email']);
         }
 
-        if (strpos($user->email, '@brentwood.ca') !== false){
+        // check if they're an existing user
+        $existing_user = User::where('email', $user->email)->first();
 
-            return User::create([
-                'name'     => $user->name,
-                'email'    => $user->email,
-                'provider' => $provider,
-                'provider_id' => $user->id
-            ]);
-
+        if($existing_user instanceof User){
+            // log them in
+            auth()->login($existing_user, true);
         } else {
-            return null;
+            // create a new user
+            $new_user = new User;
+            $new_user->name = $user->name;
+            $new_user->email = $user->email;
+            $new_user->google_id = $user->id;
+            $new_user->avatar = $user->avatar;
+            $new_user->avatar_original = $user->avatar_original;
+            $new_user->email_verified_at = Carbon::now();
+            $new_user->save();
+
+            auth()->login($new_user, true);
         }
-        
+
+        $google_api = app()->make(GoogleAPI::class);
+        $google_api->setSessionUserGroups();
+
+        return redirect()->route('home');
+
     }
+
 
 }

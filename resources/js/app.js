@@ -1,22 +1,34 @@
+import Vue from 'vue';
 
-/**
- * First we will load all of this project's JavaScript dependencies which
- * includes Vue and other libraries. It is a great starting point when
- * building robust, powerful web applications using Vue and Laravel.
- */
+import axios from 'axios';    
+Object.defineProperty(Vue.prototype, '$http', { value: axios });
 
-require('./bootstrap');
+import lodash from 'lodash';    
+Object.defineProperty(Vue.prototype, '$lodash', { value: lodash });
 
-window.Vue = require('vue');
+import Editor from '@tinymce/tinymce-vue';
 
-/**
- * Next, we will create a fresh Vue application instance and attach it to
- * the page. Then, you may begin adding components to this application
- * or customize the JavaScript scaffolding to fit your unique needs.
- */
+//let tinymceApiKey = document.head.querySelector('meta[name="tinymce-api-key"]');
 
-Vue.component('example-component', require('./components/ExampleComponent.vue'));
+Vue.component('content-item', require('./components/ContentItem.vue'));
+Vue.component('content-items', require('./components/ContentItems.vue'));
+Vue.component('editor', Editor);
 
 const app = new Vue({
-    el: '#app'
+    el: '#app',
+
+    methods: {
+        
+        logout: function() {
+
+            this.$http.post('/logout').then( response => {
+                window.location.href = '/';
+            }, error => {
+                console.log('There was an error during logout');
+            });
+        
+        }
+
+    }
+
 });
