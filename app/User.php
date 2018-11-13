@@ -48,4 +48,16 @@ class User extends Authenticatable
     {
         return collect($this->publish_users)->contains(auth()->user()->email);
     }
+
+    public static function OAuthCheck()
+    {
+
+        if (!session()->has('user_groups')) {
+            auth()->logout();
+            session()->invalidate();
+            return redirect()->route('home');
+        }
+        
+        return false;
+    }
 }

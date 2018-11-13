@@ -17,7 +17,7 @@
 
             <div class="header">
                 <div class="user-info">
-                    @if (auth()->check())
+                    @if (auth()->user())
                         <div class="user-name">{{ auth()->user()->name }}</div>
                         <div @click="logout" class="button">Logout</div>
                     @else

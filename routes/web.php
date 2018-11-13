@@ -18,7 +18,7 @@ Route::get('/', 'HomeController@index')->name('home');
 Route::get('login', 'Auth\LoginController@redirectToProvider')->name('login');
 Route::get('login/callback', 'Auth\LoginController@handleProviderCallback')->name('login.callback');
 
-Route::group(['middleware' => ['auth', 'staff']], function () {
+Route::group(['middleware' => ['auth', 'staff', 'has-groups']], function () {
 
     Route::get('content', 'ContentController@index')->name('content');
     Route::post('content/load', 'ContentController@load')->name('content.load');

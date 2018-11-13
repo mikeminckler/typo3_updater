@@ -4,23 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-use Google_Client;
-use Google_Service_Drive;
-
-use App\GoogleAPI;
-use Google_Service_Directory;
+use App\User;
 
 class HomeController extends Controller
 {
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        //$this->middleware('auth');
-    }
 
     /**
      * Show the application dashboard.
@@ -29,6 +16,7 @@ class HomeController extends Controller
      */
     public function index()
     {
+        User::OAuthCheck();
         return view('home', compact('groups'));
     }
 

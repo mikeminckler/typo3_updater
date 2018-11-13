@@ -23,6 +23,16 @@ class GoogleAPI
     protected function createDirectoryClient()
     {
     
+        $service = storage_path('app').'/service.json';
+
+        $client = new Google_Client();
+        $client->setScopes(Google_Service_Directory::ADMIN_DIRECTORY_GROUP_READONLY);
+        $client->setAuthConfig($service);
+        $client->setSubject('brent.lee@brentwood.ca');
+
+        return $client;
+
+        /*
         $credentials = storage_path('app').'/credentials.json';
         $token = json_decode(file_get_contents(storage_path('app').'/token.json'), true);
 
@@ -41,7 +51,6 @@ class GoogleAPI
                 Storage::delete('token.json');
                 Storage::put('token.json', json_encode($client->getAccessToken()));
             } else {
-                dd('NEED TO CREATE A NEW TOKEN');
                 $accessToken = $client->fetchAccessTokenWithAuthCode($authCode);
                 $client->setAccessToken($accessToken);
             }
@@ -49,6 +58,7 @@ class GoogleAPI
         }
 
         return $client;
+         */
 
     }
 
