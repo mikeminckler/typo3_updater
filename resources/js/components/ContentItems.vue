@@ -10,7 +10,7 @@
         </div>
 
         <div class="section">
-            <content-item v-for="content in contentItems" :can-publish="canPublish" :content="content" :key="content.id"></content-item>
+            <content-item v-for="(content, index) in contentItems" :can-publish="canPublish" :content="content" :key="content.id" @remove="remove(content, index)"></content-item>
         </div>
 
     </div>
@@ -61,6 +61,10 @@
                     console.log('there was an error');
                 });
 
+            },
+
+            remove: function(content, index) {
+                this.contentItems.splice(index, 1);
             }
         
         }

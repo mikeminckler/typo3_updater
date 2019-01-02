@@ -21,6 +21,8 @@
                     <div v-else>Changed</div>
                 </div>
 
+                <div class="content-remove-icon" v-if="canPublish" @click.stop.prevent="remove()"><i class="fas fa-times"></i></div>
+
             </div>
         </div>
 
@@ -90,6 +92,23 @@
                         
                 });
             
+            },
+
+            remove: function() {
+
+                let post_data = {
+                    'id': this.content.id
+                }
+            
+                var answer = confirm('Are you sure you want to delete this content item from the updater?');
+                if (answer == true) {
+                
+                    this.$http.post('/content/remove', post_data).then( response => {
+                        this.$emit('remove', this.content.id);
+                    }, error => {
+                            
+                    });
+                }
             },
 
             saved: function() {

@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use App\Content;
 use App\ExternalContent;
 
+use Cache;
+
 class ContentController extends Controller
 {
 
@@ -57,6 +59,13 @@ class ContentController extends Controller
         $content = Content::findOrFail(request()->input('id'));
         $content->publish();
         return response()->json(['success' => 'Content Published']);
+    }
+
+    public function remove()
+    {
+        $content = Content::findOrFail(request()->input('id'));
+        $content->delete();
+        return response()->json(['success' => 'Content Removed']);
     }
 
 }

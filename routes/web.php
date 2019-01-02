@@ -25,5 +25,6 @@ Route::group(['middleware' => ['auth', 'staff', 'has-groups']], function () {
     Route::post('content/create', 'ContentController@create')->name('content.create');
     Route::post('content/update', 'ContentController@update')->name('content.update');
     Route::post('content/publish', 'ContentController@publish')->name('content.publish');
+    Route::post('content/remove', 'ContentController@remove')->name('content.remove');
 
 });
