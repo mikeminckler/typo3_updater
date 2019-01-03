@@ -20,7 +20,9 @@ Route::get('login/callback', 'Auth\LoginController@handleProviderCallback')->nam
 
 Route::group(['middleware' => ['auth', 'staff', 'has-groups']], function () {
 
-    Route::get('content', 'ContentController@index')->name('content');
+    Route::get('courses', 'ContentController@courses')->name('courses');
+    Route::get('profiles', 'ContentController@profiles')->name('profiles');
+
     Route::post('content/load', 'ContentController@load')->name('content.load');
     Route::post('content/create', 'ContentController@create')->name('content.create');
     Route::post('content/update', 'ContentController@update')->name('content.update');

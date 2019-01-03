@@ -21,7 +21,7 @@
 <script>
     export default {
 
-        props: ['canPublish', 'canAddCourses'],
+        props: ['canPublish', 'canAddCourses', 'category'],
 
         data: function() {
         
@@ -43,7 +43,7 @@
         
             loadContent: function() {
             
-                this.$http.post('/content/load').then( response => {
+                this.$http.post('/content/load', {'category': this.category}).then( response => {
                     this.contentItems = response.data.contentItems;
                 }, error => {
                     console.log('there was an error');
@@ -54,7 +54,7 @@
 
             addContentById: function() {
             
-                this.$http.post('/content/create', {'id': this.addId}).then( response => {
+                this.$http.post('/content/create', {'id': this.addId, 'category': this.category}).then( response => {
                     this.addId = '';
                     this.loadContent();
                 }, error => {

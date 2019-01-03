@@ -13,6 +13,19 @@ body {
     color: var(--font-color);
 }
 
+a {
+    text-decoration: none;
+    color: var(--button-bg);
+}
+
+a.menu {
+    padding: 10px;
+}
+
+div {
+    box-sizing: border-box;
+}
+
 div#app {
     display: flex;
     flex-direction: column;
@@ -22,10 +35,11 @@ div#app {
 
 div.header {
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-between;
     min-height: 25px;
     font-size: calc( var(--font-size) - 2px );
     align-items: center;
+    padding: 10px 0;
 
     & div.user-info {
         display: flex;

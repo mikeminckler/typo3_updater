@@ -12,14 +12,19 @@ use Cache;
 class ContentController extends Controller
 {
 
-    public function index()
+    public function courses()
     {
-        return view('content.index');
+        return view('content.courses');
+    }
+
+    public function profiles()
+    {
+        return view('content.profiles');
     }
 
     public function load()
     {
-        $content = Content::all()->sortBy(function($item) {
+        $content = Content::where('category', request('category'))->get()->sortBy(function($item) {
             return $item->header;
         })->values();
         return response()->json(['contentItems' => $content]);
@@ -37,6 +42,7 @@ class ContentController extends Controller
 
         $content = new Content;
         $content->external_content_id = request()->input('id');
+        $content->category = request()->input('category');
         $content->save();
 
         return response()->json(['success' => 'Added '.$content->header]);

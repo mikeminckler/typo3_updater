@@ -8,7 +8,8 @@
     @if (!auth()->check())
         <p>Please <a href="{{ route('login') }}" class="button">Login</a> to update content</p> 
     @else
-        <div class="link"><a href="{{ route('content') }}" class="button">Update Content</a></div>
+        <div class="link"><a href="{{ route('courses') }}" class="button">Update Courses</a></div>
+        <div class="link"><a href="{{ route('profiles') }}" class="button">Update Bios</a></div>
     @endif
 </div>
 
