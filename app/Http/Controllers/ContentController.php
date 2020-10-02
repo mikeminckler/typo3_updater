@@ -22,6 +22,11 @@ class ContentController extends Controller
         return view('content.profiles');
     }
 
+    public function arts()
+    {
+        return view('content.arts');
+    }
+
     public function load()
     {
         $content = Content::where('category', request('category'))->get()->sortBy(function($item) {

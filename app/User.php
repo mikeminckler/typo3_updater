@@ -22,7 +22,7 @@ class User extends Authenticatable
     protected $publish_users = [
         'mike.minckler@brentwood.ca',
         'ian.mcpherson@brentwood.ca',
-        'cheryl.murtland@brentwood.bc.ca',
+        'cheryl.murtland@brentwood.ca',
     ];
 
     /**
@@ -41,7 +41,11 @@ class User extends Authenticatable
 
     public function hasGroup($group)
     {
-        return session()->get('user_groups')->contains($group);
+        if (session()->has('user_groups')) {
+            return session()->get('user_groups')->contains($group);
+        } else {
+            return false;
+        }
     }
 
     public function canPublish()

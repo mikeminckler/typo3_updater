@@ -22,6 +22,7 @@ Route::group(['middleware' => ['auth', 'staff', 'has-groups']], function () {
 
     Route::get('courses', 'ContentController@courses')->name('courses');
     Route::get('profiles', 'ContentController@profiles')->name('profiles');
+    Route::get('arts', 'ContentController@arts')->name('arts');
 
     Route::post('content/load', 'ContentController@load')->name('content.load');
     Route::post('content/create', 'ContentController@create')->name('content.create');

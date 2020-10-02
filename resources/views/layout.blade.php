@@ -17,8 +17,9 @@
 
             <div class="header">
                 <div class="top-menu">
-                    <a href="{{ route('courses') }}" class="menu">Course Updates</a>
-                    <a href="{{ route('profiles') }}" class="menu">Bio Updates</a>
+                    <a href="{{ route('courses') }}" class="menu">Academic Courses</a>
+                    <a href="{{ route('profiles') }}" class="menu">Faculty Bios</a>
+                    <a href="{{ route('arts') }}" class="menu">Arts Courses</a>
                 </div>
                 <div class="user-info">
                     @if (auth()->user())
